@@ -3,4 +3,8 @@
     <string name="button_label_previous">Previous</string>
     <string name="button_label_next">Next</string>
     <string name="button_label_alt_text">Alt Text</string>
+    <string name="comic_label">set comic</string>
+    <string name="label_comic_number">Comic Number:</string>
+    <string name="most_recent">Most Recent</string>
+    <string name="random_comic">Random Comic</string>
 </resources>

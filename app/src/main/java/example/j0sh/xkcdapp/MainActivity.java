@@ -1,38 +1,33 @@
 package example.j0sh.xkcdapp;
 
-import android.content.Context;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.media.Image;
-import android.os.StrictMode;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.bumptech.glide.Glide;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.Random;
 
-import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import it.sephiroth.android.library.imagezoom.ImageViewTouch;
+import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "xkcdMainActivity";
-    private int current_comic;
-    private int max_comic;
-    private ImageView imageView;
+    private int current_comic;/*the current comic being displayed*/
+    private int max_comic; /*the most recent comic, and therefore the maximum comic to serve*/
+    private ImageViewTouch imageViewTouch;
+    private ProgressBar loader;
 
     public MainActivity() {
         current_comic = -1;
@@ -43,7 +38,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        imageView = (ImageView) findViewById(R.id.imageView);
+        imageViewTouch = (ImageViewTouch) findViewById(R.id.imageView);
+        imageViewTouch.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
+
+        loader = (ProgressBar) findViewById(R.id.LoadingSpinner);
+        loader.setIndeterminate(true);
+        loader.setVisibility(View.INVISIBLE);
+
 
         Log.i(TAG, String.valueOf(current_comic));
 
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (current_comic > 0) {
                     current_comic--;
-                    new DownloadAndSetImage(MainActivity.this).execute(current_comic);
+                    new SetComic(MainActivity.this).execute(current_comic);
                 }
             }
         });
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (current_comic < max_comic) {
                     current_comic++;
-                    new DownloadAndSetImage(MainActivity.this).execute(current_comic);
+                    new SetComic(MainActivity.this).execute(current_comic);
                 }
             }
         });
@@ -79,10 +80,57 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+////        getSupportActionBar().setIcon(android.R.drawable.ic_menu_more);
+//        getSupportActionBar().setHomeAsUpIndicator(android.R.drawable.ic_menu_more);
+//        getSupportActionBar().setDisplayShowCustomEnabled(true);
+//        getSupportActionBar().setCustomView(android.R.drawable.ic_menu_more);
     }
 
-    public void setCurrent_comic(int current_comic) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_comic_label:
+                /*FIXME: show a dialog to set comic*/
+                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                dialog.setTitle("xkcd Number:");
+                LayoutInflater inflater = getLayoutInflater();
+                View view = inflater.inflate(R.layout.layout_select_comic, null);
+                dialog.setView(view);
+                final EditText comic_field = (EditText) view.findViewById(R.id.comic_number_input);
+                dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if ((comic_field.getText() == null) || comic_field.getText().toString().equals("")) {
+                            return;
+                        }
+                        int comic_num = Integer.parseInt(comic_field.getText().toString());
+                        new SetComic(MainActivity.this).execute(comic_num);
+                    }
+                });
+                dialog.show();
+                return true;
+            case R.id.action_random_comic:
+                Random r = new Random();
+                int next_comic = r.nextInt(max_comic);
+                new SetComic(MainActivity.this).execute(next_comic);
+                return true;
+            case R.id.action_todays_comic:
+                new SetComic(MainActivity.this).execute(max_comic);
+                return true;
+        }
+        return false;
+    }
+
+
+    public void setCurrent_comic_num(int current_comic) {
         this.current_comic = current_comic;
         Log.i(TAG, String.format("Set comic: %d", current_comic));
     }
@@ -92,7 +140,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setImageViewBitmap(Bitmap bitmap) {
-        imageView.setImageBitmap(bitmap);
+        imageViewTouch.setImageBitmap(bitmap);
+    }
+
+    public void setImageViewByURL(String url) {
+        Glide.with(this).load(url).into(imageViewTouch);
+    }
+
+    public void setLoading(final Boolean loading) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (loading) {
+                    loader.setVisibility(View.VISIBLE);
+                } else {
+                    loader.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
 
 }

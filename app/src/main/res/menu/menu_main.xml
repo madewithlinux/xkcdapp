@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+    <!--<item android:id="@+id/action_settings" android:title="@string/action_settings"-->
+        <!--android:orderInCategory="100" app:showAsAction="never" />-->
+    <item android:id="@+id/action_comic_label" android:title="@string/comic_label"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_random_comic" android:title="@string/random_comic"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_todays_comic" android:title="@string/most_recent"
+        android:orderInCategory="100" app:showAsAction="never" />
+</menu>
