@@ -15,6 +15,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.Random;
 
@@ -98,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_comic_label:
-                /*FIXME: show a dialog to set comic*/
                 AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                 dialog.setTitle("xkcd Number:");
                 LayoutInflater inflater = getLayoutInflater();
@@ -123,7 +125,8 @@ public class MainActivity extends AppCompatActivity {
                 new SetComic(MainActivity.this).execute(next_comic);
                 return true;
             case R.id.action_todays_comic:
-                new SetComic(MainActivity.this).execute(max_comic);
+//                new SetComic(MainActivity.this).execute(max_comic);
+                new GetCurrentComic(this).execute();
                 return true;
         }
         return false;
@@ -144,7 +147,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setImageViewByURL(String url) {
-        Glide.with(this).load(url).into(imageViewTouch);
+        /*remove the old image*/
+        imageViewTouch.setImageBitmap(null);
+        /*start loading*/
+        MainActivity.this.setLoading(true);
+        Glide.with(this).load(url).listener(new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                /*reset the loader if we get an exception*/
+                MainActivity.this.setLoading(false);
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                /*reset the loader when we set the image*/
+                MainActivity.this.setLoading(false);
+                return false;
+            }
+        }).into(imageViewTouch);
     }
 
     public void setLoading(final Boolean loading) {
@@ -160,4 +181,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public int getCurrent_comic() {
+        return current_comic;
+    }
 }
