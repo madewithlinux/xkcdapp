@@ -49,7 +49,6 @@ public class SetComic extends AsyncTask<Integer, Integer, Bitmap> {
         main.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                main.setLoading(false);
                 main.setImageViewByURL(comic_url_str);
                 main.setCurrent_comic_num(comic);
                 main.setTitle(comic_title);
