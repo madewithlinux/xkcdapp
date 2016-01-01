@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion '23.0.2'
 
     defaultConfig {
         applicationId "example.j0sh.xkcdapp"
@@ -15,6 +15,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
         }
     }
 }
@@ -24,8 +25,6 @@ repositories {
 }
 
 dependencies {
-    compile files('libs/urlimageviewhelper-1.0.4.jar')
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.squareup.okhttp:okhttp:2.6.0'
