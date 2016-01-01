@@ -1,5 +1,5 @@
 # xkcdapp
-an app to read the excellent webcomic, xkcd
+an app to read the excellent webcomic, xkcd. [Play Store link](https://play.google.com/store/apps/details?id=example.j0sh.xkcdapp)
 
 ## Features:  
 * caches images so subsequent viewings of the same comic won't retrieve the comic again
