@@ -2,7 +2,9 @@ package example.j0sh.xkcdapp;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -83,11 +85,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-////        getSupportActionBar().setIcon(android.R.drawable.ic_menu_more);
-//        getSupportActionBar().setHomeAsUpIndicator(android.R.drawable.ic_menu_more);
-//        getSupportActionBar().setDisplayShowCustomEnabled(true);
-//        getSupportActionBar().setCustomView(android.R.drawable.ic_menu_more);
     }
 
     @Override
@@ -101,33 +98,46 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_comic_label:
-                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                 dialog.setTitle("xkcd Number:");
                 LayoutInflater inflater = getLayoutInflater();
-                View view = inflater.inflate(R.layout.layout_select_comic, null);
+                final View view = inflater.inflate(R.layout.layout_select_comic, null);
                 dialog.setView(view);
                 final EditText comic_field = (EditText) view.findViewById(R.id.comic_number_input);
                 dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if ((comic_field.getText() == null) || comic_field.getText().toString().equals("")) {
+                        if ((comic_field.getText() == null)
+                                || comic_field.getText().toString().equals("")) {
                             return;
                         }
-                        int comic_num = Integer.parseInt(comic_field.getText().toString());
+                        final int comic_num;
+                        try {
+                            comic_num = Integer.parseInt(comic_field.getText().toString());
+                        } catch (NumberFormatException e) {
+                            /*invalid number, do nothing*/
+                            return;
+                        }
+                        if (comic_num > max_comic) {
+                            return;
+                        }
                         new SetComic(MainActivity.this).execute(comic_num);
                     }
                 });
                 dialog.show();
                 return true;
             case R.id.action_random_comic:
-                Random r = new Random();
-                int next_comic = r.nextInt(max_comic);
+                final Random r = new Random();
+                final int next_comic = r.nextInt(max_comic);
                 new SetComic(MainActivity.this).execute(next_comic);
                 return true;
             case R.id.action_todays_comic:
 //                new SetComic(MainActivity.this).execute(max_comic);
                 new GetCurrentComic(this).execute();
                 return true;
+            case R.id.action_explination:
+                final Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.explainxkcd.com/wiki/index.php/" + current_comic));
+                startActivity(browserIntent);
         }
         return false;
     }

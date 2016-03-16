@@ -15,3 +15,4 @@ an app to read the excellent webcomic, xkcd. [Play Store link](https://play.goog
 * [okhttp](http://square.github.io/okhttp/): caching http library
 * [Glide](https://github.com/bumptech/glide): web image library
 * [ImageViewTouch](https://github.com/sephiroth74/ImageViewZoom): ImageView work-alike with pinch to zoom functionality
+`

@@ -3,11 +3,12 @@
     <string name="button_label_previous">Previous</string>
     <string name="button_label_next">Next</string>
     <string name="button_label_alt_text">Alt Text</string>
-    <string name="comic_label">set comic</string>
+    <string name="comic_label">Set Comic</string>
     <string name="label_comic_number">Comic Number:</string>
     <string name="most_recent">Most Recent</string>
     <string name="random_comic">Random Comic</string>
     <string name="title_activity_pager_">PagerActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="explination">Explination</string>
 </resources>
