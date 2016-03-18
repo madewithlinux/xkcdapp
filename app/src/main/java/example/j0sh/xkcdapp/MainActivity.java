@@ -1,11 +1,16 @@
 package example.j0sh.xkcdapp;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,11 +22,15 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Random;
+import java.util.UUID;
 
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
@@ -29,8 +38,11 @@ import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "xkcdMainActivity";
+    private static final String explination_url = "http://www.explainxkcd.com/wiki/index.php/";
+    private static final String xkcd_mobile_url = "http://m.xkcd.com/";
     private int current_comic;/*the current comic being displayed*/
     private int max_comic; /*the most recent comic, and therefore the maximum comic to serve*/
+    private ContentResolver resolver;
     private ImageViewTouch imageViewTouch;
     private ProgressBar loader;
 
@@ -41,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        resolver = getContentResolver();
         setContentView(R.layout.activity_main);
 
         imageViewTouch = (ImageViewTouch) findViewById(R.id.imageView);
@@ -99,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.action_comic_label:
                 final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-                dialog.setTitle("xkcd Number:");
-                LayoutInflater inflater = getLayoutInflater();
+                dialog.setTitle(R.string.number_popup_title);
+                final LayoutInflater inflater = getLayoutInflater();
                 final View view = inflater.inflate(R.layout.layout_select_comic, null);
                 dialog.setView(view);
                 final EditText comic_field = (EditText) view.findViewById(R.id.comic_number_input);
@@ -116,9 +129,11 @@ public class MainActivity extends AppCompatActivity {
                             comic_num = Integer.parseInt(comic_field.getText().toString());
                         } catch (NumberFormatException e) {
                             /*invalid number, do nothing*/
+                            Log.i(TAG, "Invalid number: " + comic_field.getText());
                             return;
                         }
                         if (comic_num > max_comic) {
+                            Log.i(TAG, "comic number past current comic: " + comic_field.getText());
                             return;
                         }
                         new SetComic(MainActivity.this).execute(comic_num);
@@ -132,14 +147,48 @@ public class MainActivity extends AppCompatActivity {
                 new SetComic(MainActivity.this).execute(next_comic);
                 return true;
             case R.id.action_todays_comic:
-//                new SetComic(MainActivity.this).execute(max_comic);
                 new GetCurrentComic(this).execute();
                 return true;
             case R.id.action_explination:
-                final Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.explainxkcd.com/wiki/index.php/" + current_comic));
-                startActivity(browserIntent);
+                final Intent browserExplination = new Intent(Intent.ACTION_VIEW, Uri.parse(explination_url + current_comic));
+                startActivity(browserExplination);
+                return true;
+            case R.id.action_view_in_browser:
+                final Intent browserComic = new Intent(Intent.ACTION_VIEW, Uri.parse(xkcd_mobile_url + current_comic));
+                startActivity(browserComic);
+                return true;
+            case R.id.action_share_image: {
+                final GlideBitmapDrawable drawable = (GlideBitmapDrawable) imageViewTouch.getDrawable();
+                this.shareBitmap(drawable.getBitmap());
+                return true;
+            }
+            case R.id.action_save_image: {
+                final GlideBitmapDrawable drawable = (GlideBitmapDrawable) imageViewTouch.getDrawable();
+                MediaStore.Images.Media.insertImage(resolver, drawable.getBitmap(), this.getTitle().toString(), null);
+                return true;
+            }
         }
         return false;
+    }
+
+    @SuppressLint("SetWorldReadable")
+    private void shareBitmap(Bitmap bitmap) {
+        /*puts the image in the cache so as not to litter the filesystem*/
+        try {
+            File file = new File(this.getCacheDir(), UUID.randomUUID().toString() + ".png");
+            FileOutputStream fOut = new FileOutputStream(file);
+            Log.i(TAG, "sharing image");
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+            file.setReadable(true, false);
+            final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+            intent.setType("image/png");
+            startActivity(intent);
+        } catch (Exception e) {
+            Log.e(TAG, "error", e);
+        }
     }
 
 
@@ -152,9 +201,6 @@ public class MainActivity extends AppCompatActivity {
         this.max_comic = max_comic;
     }
 
-    public void setImageViewBitmap(Bitmap bitmap) {
-        imageViewTouch.setImageBitmap(bitmap);
-    }
 
     public void setImageViewByURL(String url) {
         /*remove the old image*/
@@ -194,4 +240,6 @@ public class MainActivity extends AppCompatActivity {
     public int getCurrent_comic() {
         return current_comic;
     }
+
+
 }
