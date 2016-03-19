@@ -47,8 +47,6 @@ public class PagerActivity extends Activity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         ActionBar actionBar = getActionBar();
-//        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-
     }
 
 

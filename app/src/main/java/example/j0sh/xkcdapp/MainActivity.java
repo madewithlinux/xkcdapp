@@ -6,8 +6,6 @@ import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -163,6 +161,15 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.action_save_image: {
+
+                /*TODO: make this part work with android 6.0 new permissions system*/
+//                int permission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+                final Uri uri = Uri.parse("content://media/external/images/media");
+                final String provider = "com.android.providers.media.MediaProvider";
+                grantUriPermission(provider, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                grantUriPermission(provider, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                grantUriPermission(provider, uri, Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                 final GlideBitmapDrawable drawable = (GlideBitmapDrawable) imageViewTouch.getDrawable();
                 MediaStore.Images.Media.insertImage(resolver, drawable.getBitmap(), this.getTitle().toString(), null);
                 return true;
@@ -182,10 +189,11 @@ public class MainActivity extends AppCompatActivity {
             fOut.flush();
             fOut.close();
             file.setReadable(true, false);
-            final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-            intent.setType("image/png");
-            startActivity(intent);
+            final Intent shareImageIntent = new Intent(android.content.Intent.ACTION_SEND);
+            shareImageIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+            shareImageIntent.setType("image/png");
+            Intent intentChooser = Intent.createChooser(shareImageIntent, "Share Comic Image");
+            startActivity(intentChooser);
         } catch (Exception e) {
             Log.e(TAG, "error", e);
         }

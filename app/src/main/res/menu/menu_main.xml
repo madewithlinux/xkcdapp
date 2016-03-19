@@ -7,8 +7,6 @@
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/action_explination" android:title="@string/explination"
         android:orderInCategory="100" app:showAsAction="never" />
-    <!--<item android:id="@+id/action_share" android:title="@string/Share"-->
-        <!--android:orderInCategory="100" app:showAsAction="never" />-->
     <item android:id="@+id/action_random_comic" android:title="@string/random_comic"
         android:orderInCategory="100" app:showAsAction="ifRoom" />
     <item android:id="@+id/action_todays_comic" android:title="@string/most_recent"

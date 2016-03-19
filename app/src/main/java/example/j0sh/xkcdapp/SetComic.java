@@ -1,6 +1,5 @@
 package example.j0sh.xkcdapp;
 
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -8,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.URL;
 
 public class SetComic extends AsyncTask<Integer, Integer, Integer> {
 
@@ -34,7 +32,6 @@ public class SetComic extends AsyncTask<Integer, Integer, Integer> {
             JSONObject jobj = GetComicJSON.byNumber(comic);
             Log.i(TAG,"Image URL: " + jobj.getString("img"));
             comic = jobj.getInt("num");
-//            URL comic_url = new URL(jobj.getString("img"));
             comic_url_str = jobj.getString("img");
             comic_title = jobj.getString("title");
         } catch (IOException | JSONException e) {

@@ -1,130 +1,61 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--<android.support.v4.view.ViewPager-->
-    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--android:id="@+id/drawerLayout"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent">-->
+<?xml version="1.0" encoding="utf-8"?><!--<android.support.v4.view.ViewPager--><!--xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:id="@+id/drawerLayout"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent">-->
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    tools:context="example.j0sh.xkcdapp.MainActivity">
+
+    <it.sephiroth.android.library.imagezoom.ImageViewTouch
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/btn_prev"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:paddingBottom="0dp"
         android:paddingLeft="0dp"
         android:paddingRight="0dp"
-        android:paddingTop="0dp"
-        tools:context="example.j0sh.xkcdapp.MainActivity">
+        android:paddingTop="0dp" />
 
-        <it.sephiroth.android.library.imagezoom.ImageViewTouch
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/btn_prev"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:paddingBottom="0dp"
-            android:paddingLeft="0dp"
-            android:paddingRight="0dp"
-            android:paddingTop="0dp" />
+    <Button
+        android:id="@+id/btn_prev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="@string/button_label_previous" />
 
-        <Button
-            android:id="@+id/btn_prev"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:text="@string/button_label_previous" />
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/imageView"
+        android:layout_alignRight="@+id/imageView"
+        android:layout_alignTop="@+id/btn_alt_text"
+        android:text="@string/button_label_next" />
 
-        <Button
-            android:id="@+id/btn_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/imageView"
-            android:layout_alignRight="@+id/imageView"
-            android:layout_alignTop="@+id/btn_alt_text"
-            android:text="@string/button_label_next" />
+    <Button
+        android:id="@+id/btn_alt_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btn_prev"
+        android:layout_centerHorizontal="true"
+        android:text="@string/button_label_alt_text" />
 
-        <Button
-            android:id="@+id/btn_alt_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/btn_prev"
-            android:layout_centerHorizontal="true"
-            android:text="@string/button_label_alt_text" />
-
-        <ProgressBar
-            android:id="@+id/LoadingSpinner"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" />
-    </RelativeLayout>
-
-
-    <!--&lt;!&ndash; The navigation drawer &ndash;&gt;-->
-    <!--<RelativeLayout-->
-        <!--android:layout_width="280dp"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:id="@+id/drawerPane"-->
-        <!--android:layout_gravity="start">-->
-    <!--<RelativeLayout-->
-        <!--android:id="@+id/profileBox"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="100dp"-->
-        <!--android:padding="8dp" >-->
-    <!--&lt;!&ndash;android:background="@color/material_blue_grey_800"&ndash;&gt;-->
-
-        <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
-            <!--&lt;!&ndash;android:id="@+id/avatar"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_width="50dp"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_height="50dp"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_marginTop="15dp" />&ndash;&gt;-->
-
-        <!--<LinearLayout-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="42dp"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_marginLeft="15dp"-->
-            <!--android:layout_toRightOf="@+id/avatar"-->
-            <!--android:orientation="vertical" >-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/userName"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Rishabh"-->
-                <!--android:textColor="#fff"-->
-                <!--android:textSize="16sp"-->
-                <!--android:textStyle="bold" />-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/desc"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="bottom"-->
-                <!--android:layout_marginTop="4dp"-->
-                <!--android:text="View Profile"-->
-                <!--android:textColor="#fff"-->
-                <!--android:textSize="12sp" />-->
-        <!--</LinearLayout>-->
-
-    <!--</RelativeLayout>-->
-
-    <!--&lt;!&ndash; List of Actions (pages) &ndash;&gt;-->
-    <!--&lt;!&ndash;<ListView&ndash;&gt;-->
-        <!--&lt;!&ndash;android:id="@+id/navList"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_width="280dp"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_below="@+id/profileBox"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:choiceMode="singleChoice"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:background="#ffffffff" />&ndash;&gt;-->
-
-    <!--</RelativeLayout>-->
-
-
-<!--</android.support.v4.view.ViewPager>-->
+    <ProgressBar
+        android:id="@+id/LoadingSpinner"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
+</RelativeLayout>
