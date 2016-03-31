@@ -13,12 +13,12 @@ public class SetComic extends AsyncTask<Integer, Integer, Integer> {
     public static final String TAG = "SetComic";
 
     int comic;
-    MainActivity main;
+    MainActivity_old main;
     Boolean downloading;
     String comic_url_str;
     String comic_title;
 
-    public SetComic(MainActivity _context) {
+    public SetComic(MainActivity_old _context) {
         comic = -1;
         main = _context;
         downloading = false;

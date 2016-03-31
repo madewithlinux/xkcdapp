@@ -32,7 +32,7 @@ public class GetComicJSON {
         try {
             response = client.newCall(request).execute();
         } catch (IOException e) {
-            Log.e(TAG, "Failed to download metadata for comic: " + String.valueOf(comic));
+            Log.e(TAG, "Failed to download metadata for comic: " + String.valueOf(comic), e);
         }
 
         JSONObject jobj = null;

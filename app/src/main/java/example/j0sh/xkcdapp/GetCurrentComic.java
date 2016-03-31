@@ -9,9 +9,9 @@ import java.io.IOException;
 public class GetCurrentComic extends AsyncTask<Integer, Integer, Integer> {
 
     public static final String TAG = "GetCurrentComic";
-    MainActivity context;
+    MainActivity_old context;
 
-    public GetCurrentComic(MainActivity _context) {
+    public GetCurrentComic(MainActivity_old _context) {
         context = _context;
     }
 

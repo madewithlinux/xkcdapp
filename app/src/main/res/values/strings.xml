@@ -16,4 +16,5 @@
     <string name="number_popup_title">xkcd Number:</string>
     <string name="share_picture">Share Image</string>
     <string name="save_picture">Save to gallery</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

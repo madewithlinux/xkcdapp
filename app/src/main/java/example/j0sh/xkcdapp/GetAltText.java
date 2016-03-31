@@ -12,9 +12,9 @@ public class GetAltText extends AsyncTask<Integer, Integer, String> {
 
     public static final String TAG = "GetAltText";
 
-    MainActivity main;
+    MainActivity_old main;
 
-    public GetAltText(MainActivity _main) {
+    public GetAltText(MainActivity_old _main) {
         main = _main;
     }
 
