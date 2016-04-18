@@ -5,7 +5,7 @@
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/action_view_in_browser" android:title="@string/view_in_browser"
         android:orderInCategory="100" app:showAsAction="never" />
-    <item android:id="@+id/action_explination" android:title="@string/explination"
+    <item android:id="@+id/action_explination" android:title="@string/explanation"
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/action_random_comic" android:title="@string/random_comic"
         android:orderInCategory="100" app:showAsAction="ifRoom" />

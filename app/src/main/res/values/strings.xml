@@ -10,7 +10,7 @@
     <string name="title_activity_pager_">PagerActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
-    <string name="explination">Explination</string>
+    <string name="explanation">Explanation</string>
     <string name="view_in_browser">View in Broswer</string>
     <string name="Share">Share</string>
     <string name="number_popup_title">xkcd Number:</string>
