@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">xkcdapp</string>
+    <string name="comic_label">Goto</string>
+    <string name="label_comic_number">Comic Number</string>
+    <string name="most_recent">Most Recent</string>
+    <string name="random_comic">Random</string>
+    <string name="title_activity_pager_">PagerActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="explanation">Explanation</string>
+    <string name="view_in_browser">View in Broswer</string>
+    <string name="Share">Share</string>
+    <string name="number_popup_title">xkcd Number:</string>
+    <string name="share_picture">Share Image</string>
+    <string name="save_picture">Save to gallery</string>
+    <string name="alt_text">alt</string>
+    <string name="alt_text_title">alt-text</string>
+    <string name="share_comic">Share Comic</string>
+    <string name="comic_number">Comic Number:</string>
+</resources>
