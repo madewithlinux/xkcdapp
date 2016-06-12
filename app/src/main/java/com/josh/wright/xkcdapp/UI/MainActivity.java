@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -33,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String KEY_LAST_COMIC = "lastComic";
     private static final String KEY_COUNT = "comicCount";
 
-    private SectionsPagerAdapter sectionsPagerAdapter;
+    private ComicPagerAdapter comicPagerAdapter;
     private ViewPager viewPager;
 
     @Override
@@ -41,11 +38,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("Loading...");
-        sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        comicPagerAdapter = new ComicPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
         viewPager = (ViewPager) findViewById(R.id.container);
         assert viewPager != null;
-        viewPager.setAdapter(sectionsPagerAdapter);
+        viewPager.setAdapter(comicPagerAdapter);
         /*this updated the title for after the active comic is changed*/
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -68,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             goToMostRecent();
         } else {
             viewPager.setCurrentItem(savedInstanceState.getInt(KEY_LAST_COMIC));
-            sectionsPagerAdapter.setCount(savedInstanceState.getInt(KEY_COUNT));
+            comicPagerAdapter.setCount(savedInstanceState.getInt(KEY_COUNT));
         }
     }
 
@@ -76,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(KEY_LAST_COMIC, getComicNumber());
-        outState.putInt(KEY_COUNT, sectionsPagerAdapter.getCount());
+        outState.putInt(KEY_COUNT, comicPagerAdapter.getCount());
     }
 
     private void goToMostRecent() {
@@ -84,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDone(int mostRecent) {
                 Log.d(TAG, "setting current comic to " + mostRecent);
-                sectionsPagerAdapter.setCount(mostRecent + 1);
+                comicPagerAdapter.setCount(mostRecent + 1);
                 viewPager.setCurrentItem(mostRecent);
             }
         });
@@ -130,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
             }
             case R.id.action_random_comic: {
                 final Random r = new Random();
-                final int next_comic = r.nextInt(sectionsPagerAdapter.getCount());
+                final int next_comic = r.nextInt(comicPagerAdapter.getCount());
                 viewPager.setCurrentItem(next_comic);
                 return true;
             }
@@ -181,33 +178,6 @@ public class MainActivity extends AppCompatActivity {
                 .setTitle(getString(R.string.alt_text_title))
                 .setPositiveButton(android.R.string.ok, null)
                 .show();
-    }
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    private final class SectionsPagerAdapter extends FragmentPagerAdapter {
-        private int count;
-
-        public void setCount(int count) {
-            this.count = count;
-            notifyDataSetChanged();
-        }
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return ComicFragment.newInstance(position);
-        }
-
-        @Override
-        public int getCount() {
-            return count;
-        }
     }
 
     public int getComicNumber() {
