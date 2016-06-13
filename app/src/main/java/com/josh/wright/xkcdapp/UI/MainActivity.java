@@ -19,6 +19,7 @@ import com.josh.wright.xkcdapp.Constants;
 import com.josh.wright.xkcdapp.R;
 import com.josh.wright.xkcdapp.Service.ComicBean;
 import com.josh.wright.xkcdapp.Service.ComicService;
+import com.josh.wright.xkcdapp.Service.ComicUpdateCallback;
 import com.josh.wright.xkcdapp.Service.MostRecentComicCallback;
 
 import java.io.File;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ComicPagerAdapter comicPagerAdapter;
     private ViewPager viewPager;
+    private ComicService comicService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +42,14 @@ public class MainActivity extends AppCompatActivity {
         setTitle("Loading...");
         comicPagerAdapter = new ComicPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
+        comicService = ComicService.getInstance();
         viewPager = (ViewPager) findViewById(R.id.container);
         assert viewPager != null;
         viewPager.setAdapter(comicPagerAdapter);
         /*this updated the title for after the active comic is changed*/
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
             @Override
             public void onPageSelected(int position) {
@@ -56,9 +57,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
+            public void onPageScrollStateChanged(int state) {}
         });
 
         if (savedInstanceState == null) {
@@ -77,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToMostRecent() {
-        ComicService.getInstance().getMostRecentComic(new MostRecentComicCallback() {
+        comicService.getMostRecentComic(new MostRecentComicCallback() {
             @Override
             public void onDone(int mostRecent) {
                 Log.d(TAG, "setting current comic to " + mostRecent);
@@ -96,11 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         switch (id) {
             /*todo: these first two are a little messy*/
             case R.id.action_show_alt_text:
@@ -169,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showAltText() {
+        /* todo make a separate layout for this */
         final TextView textView = new TextView(this);
         textView.setTextSize(22);
         textView.setPadding(50, 0, 50, 0);
@@ -185,6 +181,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private ComicBean getCurrentComic() {
-        return ComicService.getInstance().getComic(viewPager.getCurrentItem());
+        return comicService.getComic(viewPager.getCurrentItem());
     }
 }

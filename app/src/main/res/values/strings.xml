@@ -16,4 +16,6 @@
     <string name="alt_text_title">alt-text</string>
     <string name="share_comic">Share Comic</string>
     <string name="comic_number">Comic Number:</string>
+    <string name="error_downloading">Error Downloading</string>
+    <string name="retry">Retry</string>
 </resources>
