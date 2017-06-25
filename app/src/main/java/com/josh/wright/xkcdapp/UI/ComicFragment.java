@@ -3,6 +3,7 @@ package com.josh.wright.xkcdapp.UI;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.TextViewCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
@@ -45,15 +47,24 @@ public class ComicFragment extends Fragment implements ComicUpdateCallback, View
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "fragment " + String.valueOf(position));
+        View view = inflater.inflate(R.layout.fragment_comic, container, false);
+
+        this.imageView = (SubsamplingScaleImageView) view.findViewById(R.id.imageViewComic);
+        this.progressBar = (ProgressBar) view.findViewById(R.id.progressBarComic);
+        this.retryButton = (Button) view.findViewById(R.id.buttonRetry);
+        this.errorMessage = (RelativeLayout) view.findViewById(R.id.relativeLayoutErrorMessage);
         this.position = getArguments().getInt(ARG_POSITION);
-        this.comicBean = ComicService.getInstance().getComic(position, this);
         this.mainActivity = (MainActivity) getActivity();
 
-        View view = inflater.inflate(R.layout.fragment_comic, container, false);
-        imageView = (SubsamplingScaleImageView) view.findViewById(R.id.imageViewComic);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBarComic);
-        retryButton = (Button) view.findViewById(R.id.buttonRetry);
-        errorMessage = (RelativeLayout) view.findViewById(R.id.relativeLayoutErrorMessage);
+        if (position == 404) {
+            // comic 404 does not exist
+            errorMessage.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.INVISIBLE);
+            TextView textViewErrorMessage = (TextView) errorMessage.findViewById(R.id.textViewErrorMessage);
+            textViewErrorMessage.setText(R.string.comic_404_text);
+            return view;
+        }
+        this.comicBean = ComicService.getInstance().getComic(position, this);
 
         errorMessage.setVisibility(View.INVISIBLE);
         retryButton.setOnClickListener(this);

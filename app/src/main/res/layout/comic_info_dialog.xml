@@ -1,35 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TableRow>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
 
-        <TextView
-            android:id="@+id/label_comic_title"
-            android:text="Name:"/>
+        <TableRow>
 
-        <TextView android:id="@+id/comic_title"/>
-    </TableRow>
+            <TextView
+                android:id="@+id/label_comic_title"
+                android:paddingRight="10dp"
+                android:text="Title:"
+                android:textSize="20sp" />
 
-    <TableRow>
+            <TextView
+                android:id="@+id/comic_title"
+                android:textSize="20sp" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/label_comic_number"
-            android:text="Number:"
-            />
+        <TableRow>
 
-        <TextView android:id="@+id/comic_number"/>
-    </TableRow>
+            <TextView
+                android:id="@+id/label_comic_number"
+                android:paddingRight="10dp"
+                android:text="Number:"
+                android:textSize="20sp" />
 
-    <TableRow>
+            <TextView
+                android:id="@+id/comic_number"
+                android:textSize="20sp" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/label_comic_published_date"
-            android:text="Published:"
-            />
+        <TableRow>
 
-        <TextView android:id="@+id/comic_published_date"/>
-    </TableRow>
+            <TextView
+                android:id="@+id/label_comic_published_date"
+                android:paddingRight="10dp"
+                android:text="Published:"
+                android:textSize="20sp" />
 
-</TableLayout>
+            <TextView
+                android:id="@+id/comic_published_date"
+                android:textSize="20sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/label_comic_transcript"
+                android:paddingRight="10dp"
+                android:text="Transcript:"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/comic_transcript"
+                android:textSize="20sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/label_comic_alt_text"
+                android:paddingRight="10dp"
+                android:text="Alt Text:"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/comic_alt_text"
+                android:layout_weight="1"
+                android:ellipsize="none"
+                android:maxLines="100"
+                android:scrollHorizontally="false"
+                android:textSize="20sp" />
+        </TableRow>
+
+    </TableLayout>
+</ScrollView>

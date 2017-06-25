@@ -1,5 +1,6 @@
 package com.josh.wright.xkcdapp.UI;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,8 +14,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.josh.wright.xkcdapp.Constants;
@@ -50,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
         /*this updated the title for after the active comic is changed*/
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
             @Override
             public void onPageSelected(int position) {
@@ -58,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {}
+            public void onPageScrollStateChanged(int state) {
+            }
         });
 
         if (savedInstanceState == null) {
@@ -106,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 final EditText editText = new EditText(this);
                 editText.setTextSize((float) 22);
                 editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                new AlertDialog.Builder(this)
+                AlertDialog alertDialog = new AlertDialog.Builder(this)
                         .setView(editText)
                         .setTitle(getString(R.string.comic_number))
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -115,10 +122,22 @@ public class MainActivity extends AppCompatActivity {
                                 try {
                                     int comicNumber = Integer.valueOf(editText.getText().toString());
                                     viewPager.setCurrentItem(comicNumber);
-                                } catch (NumberFormatException e) { }
+                                } catch (NumberFormatException e) {
+                                }
                             }
                         })
-                        .show();
+                        .create();
+                alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialogInterface) {
+                        // focus the number input
+                        editText.requestFocus();
+                        // show keyboard
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+                    }
+                });
+                alertDialog.show();
                 return true;
             }
             case R.id.action_random_comic: {
@@ -159,6 +178,10 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     Log.e(TAG, "error", e);
                 }
+                return true;
+            }
+            case R.id.action_show_comic_info: {
+                showComicInfo();
             }
         }
         return super.onOptionsItemSelected(item);
@@ -166,20 +189,26 @@ public class MainActivity extends AppCompatActivity {
 
     public void showComicInfo() {
         LayoutInflater inflater = getLayoutInflater();
-        TableLayout tableLayout = new TableLayout(this);
+        View infoView = inflater.inflate(R.layout.comic_info_dialog, null);
 
-        TextView comic_title = (TextView) tableLayout.findViewById(R.id.comic_title);
-        TextView comic_number = (TextView) tableLayout.findViewById(R.id.comic_number);
-        TextView comic_published_date = (TextView) tableLayout.findViewById(R.id.comic_published_date);
+        final TextView comic_title = (TextView) infoView.findViewById(R.id.comic_title);
+        final TextView comic_number = (TextView) infoView.findViewById(R.id.comic_number);
+        final TextView comic_published_date = (TextView) infoView.findViewById(R.id.comic_published_date);
+        final TextView comic_transcript = (TextView) infoView.findViewById(R.id.comic_transcript);
+        final TextView comic_alt = (TextView) infoView.findViewById(R.id.comic_alt_text);
 
         ComicBean currentComic = getCurrentComic();
         comic_title.setText(currentComic.getTitle());
         comic_number.setText(String.valueOf(currentComic.getNumber()));
-//        comic_published_date.setText(currentComic.get);
+        comic_published_date.setText(currentComic.getDateAsString());
+        comic_transcript.setText(currentComic.getTranscript());
+        comic_alt.setText(currentComic.getAltText());
 
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("test");
+        new AlertDialog.Builder(this)
+                .setTitle("Info")
+                .setView(infoView)
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
 
     }
 

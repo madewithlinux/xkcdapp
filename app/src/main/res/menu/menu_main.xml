@@ -1,39 +1,45 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context=".MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
     <item
         android:id="@+id/action_goto_comic"
         android:orderInCategory="100"
         android:title="@string/comic_label"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_view_in_browser"
         android:orderInCategory="100"
         android:title="@string/view_in_browser"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_explination"
         android:orderInCategory="100"
         android:title="@string/explanation"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_random_comic"
         android:orderInCategory="100"
         android:title="@string/random_comic"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_show_alt_text"
         android:title="@string/alt_text"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_todays_comic"
         android:orderInCategory="100"
         android:title="@string/most_recent"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_share_image"
         android:orderInCategory="100"
         android:title="@string/share_picture"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_show_comic_info"
+        android:orderInCategory="100"
+        android:title="@string/info"
+        app:showAsAction="never" />
+
 </menu>

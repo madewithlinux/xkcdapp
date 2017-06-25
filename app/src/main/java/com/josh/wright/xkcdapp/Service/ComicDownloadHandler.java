@@ -34,7 +34,7 @@ public class ComicDownloadHandler {
             /*there is not zero comic*/
             return;
         }
-        if (comicBean.getJsonObject() == null) {
+        if (comicBean.getImageUrl() == null) {
             new DownloadComicJson(comicBean, callback).execute();
         } else if (comicBean.getImageBitmap() == null) {
             new DownloadComicImage(comicBean, callback).execute();
@@ -78,7 +78,7 @@ public class ComicDownloadHandler {
     }
 
     private static final class DownloadComicJson extends AsyncTask<Void, Void, Void> {
-        private ComicBean comicBean;
+        private final ComicBean comicBean;
         private final ComicUpdateCallback updateCallback;
         private ComicUpdateCallback.Result result;
 
@@ -90,7 +90,7 @@ public class ComicDownloadHandler {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                if (comicBean.getJsonObject() != null) {
+                if (comicBean.getImageUrl() != null) {
                     result = ComicUpdateCallback.Result.SUCCESS;
                     return null;
                 }
@@ -112,15 +112,11 @@ public class ComicDownloadHandler {
                         .url(url)
                         .build();
                 Response jsonResponse = client.newCall(jsonRequest).execute();
-                comicBean = mapper.readValue(jsonResponse.body().bytes(), ComicBean.class);
-//                JSONObject jsonObject = new JSONObject(jsonResponse.body().string());
-//                comicBean.setJsonObject(jsonObject);
-//                comicBean.setTitle(jsonObject.getString(KEY_TITLE));
-//                comicBean.setNumber(jsonObject.getInt(KEY_NUMBER));
-//                comicBean.setImageUrl(jsonObject.getString(KEY_IMG));
-//                comicBean.setAltText(jsonObject.getString(KEY_ALT));
-//                comicBean.setSafeTitle(jsonObject.getString(KEY_SAFE_TITLE));
+                // must copy into the destination, because overwriting it will break the reference
+                // held in the other thread
+                comicBean.setFrom(mapper.readValue(jsonResponse.body().bytes(), ComicBean.class));
                 Log.d(TAG, "downloaded json for comic " + comicBean.getNumber());
+                Log.d(TAG, "comic " + comicBean.getNumber() + "url: " + comicBean.getImageUrl());
                 result = ComicUpdateCallback.Result.SUCCESS;
             } catch (IOException e) {
                 /*todo error handling*/

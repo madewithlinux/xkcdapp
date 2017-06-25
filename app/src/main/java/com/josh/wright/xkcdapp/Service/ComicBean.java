@@ -8,8 +8,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.json.JSONObject;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class ComicBean {
+    @JsonIgnore
     public static final int MOST_RECENT_COMIC = -1;
     @JsonProperty("num")
     private int number;
@@ -20,8 +24,23 @@ public final class ComicBean {
     private String altText;
     @JsonProperty("img")
     private String imageUrl;
+    @JsonIgnore
     private Bitmap imageBitmap;
-    private JSONObject jsonObject;
+//    @JsonProperty("year")
+    private String year;
+//    @JsonProperty("month")
+    private String month;
+//    @JsonProperty("day")
+    private String day;
+    private String transcript;
+
+    public String getTranscript() {
+        return transcript;
+    }
+
+    public void setTranscript(String transcript) {
+        this.transcript = transcript;
+    }
 
     public int getNumber() {
         return number;
@@ -71,11 +90,44 @@ public final class ComicBean {
         this.imageBitmap = imageBitmap;
     }
 
-    public JSONObject getJsonObject() {
-        return jsonObject;
+    public String getMonth() {
+        return month;
     }
 
-    public void setJsonObject(JSONObject jsonObject) {
-        this.jsonObject = jsonObject;
+    public void setMonth(String month) {
+        this.month = month;
     }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
+
+    public String getDateAsString() {
+        return year + "/" + month + "/" + day;
+    }
+
+    public void setFrom(ComicBean other) {
+        setNumber(other.getNumber());
+        setTitle(other.getTitle());
+        setSafeTitle(other.getSafeTitle());
+        setAltText(other.getAltText());
+        setImageUrl(other.getImageUrl());
+        setImageBitmap(other.getImageBitmap());
+        setYear(other.getYear());
+        setMonth(other.getMonth());
+        setDay(other.getDay());
+    }
+
 }

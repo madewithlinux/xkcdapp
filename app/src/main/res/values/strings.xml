@@ -18,4 +18,6 @@
     <string name="comic_number">Comic Number:</string>
     <string name="error_downloading">Error Downloading</string>
     <string name="retry">Retry</string>
+    <string name="comic_404_text">error: comic does not exist!</string>
+    <string name="info">Info</string>
 </resources>
