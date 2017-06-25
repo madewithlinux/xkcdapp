@@ -1,22 +1,7 @@
 package com.josh.wright.xkcdapp.Service;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.util.SparseArray;
-
-import com.josh.wright.xkcdapp.Constants;
-import com.josh.wright.xkcdapp.UI.MainActivity;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 
 public final class ComicService {
     private static final String TAG = "ComicService";

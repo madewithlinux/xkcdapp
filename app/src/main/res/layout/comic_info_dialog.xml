@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <TableRow>
+
+        <TextView
+            android:id="@+id/label_comic_title"
+            android:text="Name:"/>
+
+        <TextView android:id="@+id/comic_title"/>
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:id="@+id/label_comic_number"
+            android:text="Number:"
+            />
+
+        <TextView android:id="@+id/comic_number"/>
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:id="@+id/label_comic_published_date"
+            android:text="Published:"
+            />
+
+        <TextView android:id="@+id/comic_published_date"/>
+    </TableRow>
+
+</TableLayout>

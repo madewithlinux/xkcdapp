@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.josh.wright.xkcdapp.Constants;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -22,6 +23,8 @@ public class ComicDownloadHandler {
     private static final String KEY_TITLE = "title";
     private static final String KEY_NUMBER = "num";
     private static final String KEY_SAFE_TITLE = "safe_title";
+
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     /* may run on UI thread
      * if the comic is already downloaded, does nothing
@@ -75,7 +78,7 @@ public class ComicDownloadHandler {
     }
 
     private static final class DownloadComicJson extends AsyncTask<Void, Void, Void> {
-        private final ComicBean comicBean;
+        private ComicBean comicBean;
         private final ComicUpdateCallback updateCallback;
         private ComicUpdateCallback.Result result;
 
@@ -109,16 +112,17 @@ public class ComicDownloadHandler {
                         .url(url)
                         .build();
                 Response jsonResponse = client.newCall(jsonRequest).execute();
-                JSONObject jsonObject = new JSONObject(jsonResponse.body().string());
-                comicBean.setJsonObject(jsonObject);
-                comicBean.setTitle(jsonObject.getString(KEY_TITLE));
-                comicBean.setNumber(jsonObject.getInt(KEY_NUMBER));
-                comicBean.setImageUrl(jsonObject.getString(KEY_IMG));
-                comicBean.setAltText(jsonObject.getString(KEY_ALT));
-                comicBean.setSafeTitle(jsonObject.getString(KEY_SAFE_TITLE));
+                comicBean = mapper.readValue(jsonResponse.body().bytes(), ComicBean.class);
+//                JSONObject jsonObject = new JSONObject(jsonResponse.body().string());
+//                comicBean.setJsonObject(jsonObject);
+//                comicBean.setTitle(jsonObject.getString(KEY_TITLE));
+//                comicBean.setNumber(jsonObject.getInt(KEY_NUMBER));
+//                comicBean.setImageUrl(jsonObject.getString(KEY_IMG));
+//                comicBean.setAltText(jsonObject.getString(KEY_ALT));
+//                comicBean.setSafeTitle(jsonObject.getString(KEY_SAFE_TITLE));
                 Log.d(TAG, "downloaded json for comic " + comicBean.getNumber());
                 result = ComicUpdateCallback.Result.SUCCESS;
-            } catch (JSONException | IOException e) {
+            } catch (IOException e) {
                 /*todo error handling*/
                 e.printStackTrace();
             }

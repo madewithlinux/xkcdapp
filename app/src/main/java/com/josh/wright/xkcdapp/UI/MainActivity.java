@@ -10,16 +10,17 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.josh.wright.xkcdapp.Constants;
 import com.josh.wright.xkcdapp.R;
 import com.josh.wright.xkcdapp.Service.ComicBean;
 import com.josh.wright.xkcdapp.Service.ComicService;
-import com.josh.wright.xkcdapp.Service.ComicUpdateCallback;
 import com.josh.wright.xkcdapp.Service.MostRecentComicCallback;
 
 import java.io.File;
@@ -161,6 +162,25 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showComicInfo() {
+        LayoutInflater inflater = getLayoutInflater();
+        TableLayout tableLayout = new TableLayout(this);
+
+        TextView comic_title = (TextView) tableLayout.findViewById(R.id.comic_title);
+        TextView comic_number = (TextView) tableLayout.findViewById(R.id.comic_number);
+        TextView comic_published_date = (TextView) tableLayout.findViewById(R.id.comic_published_date);
+
+        ComicBean currentComic = getCurrentComic();
+        comic_title.setText(currentComic.getTitle());
+        comic_number.setText(String.valueOf(currentComic.getNumber()));
+//        comic_published_date.setText(currentComic.get);
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("test");
+
     }
 
     public void showAltText() {

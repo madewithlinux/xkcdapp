@@ -2,14 +2,23 @@ package com.josh.wright.xkcdapp.Service;
 
 import android.graphics.Bitmap;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.json.JSONObject;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public final class ComicBean {
     public static final int MOST_RECENT_COMIC = -1;
+    @JsonProperty("num")
     private int number;
     private String title;
+    @JsonProperty("safeTitle")
     private String safeTitle;
+    @JsonProperty("alt")
     private String altText;
+    @JsonProperty("img")
     private String imageUrl;
     private Bitmap imageBitmap;
     private JSONObject jsonObject;
